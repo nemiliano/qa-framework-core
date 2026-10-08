@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Compila, corre los tests unitarios y verifica el formato (Spotless)
+  verify:
+    name: Build y tests unitarios
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      - name: mvn verify
+        run: ./mvnw -B clean verify
+      - name: Resultados de tests (Surefire)
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: surefire-reports
+          path: '**/target/surefire-reports'
+          if-no-files-found: ignore
+
+  # Tests que abren navegadores reales (Chrome para Selenium, Chromium para Playwright)
+  browser-tests:
+    name: Tests con navegador
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      - name: Instalar los módulos (necesario para el CLI de Playwright)
+        run: ./mvnw -B -q install -DskipTests
+      - name: Instalar Chromium de Playwright
+        run: >
+          ./mvnw -B -q -pl ui-playwright exec:java
+          -Dexec.mainClass=com.microsoft.playwright.CLI
+          "-Dexec.args=install --with-deps chromium"
+      - name: mvn verify con tests de navegador
+        run: ./mvnw -B verify -DexcludedGroups=none
+      - name: Evidencias
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-evidence
+          path: |
+            **/target/evidence
+            **/target/surefire-reports
+          if-no-files-found: ignore
