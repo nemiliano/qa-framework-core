@@ -12,6 +12,15 @@
   <packaging>pom</packaging>
   <name>QA Framework BOM</name>
 
+  <!-- El BOM no tiene parent, así que declara su propio destino de publicación -->
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/nemiliano/qa-framework-core</url>
+    </repository>
+  </distributionManagement>
+
   <properties>
     <!-- Versiones verificadas en Maven Central (2026-10-07). Solo estables. -->
     <junit.version>6.1.3</junit.version>
