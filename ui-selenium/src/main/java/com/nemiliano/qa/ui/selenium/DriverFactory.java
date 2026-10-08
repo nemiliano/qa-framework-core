@@ -3,6 +3,7 @@ package com.nemiliano.qa.ui.selenium;
 import com.nemiliano.qa.core.config.QaConfig;
 import com.nemiliano.qa.core.exception.ConfigurationException;
 import java.util.Locale;
+import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -36,7 +37,19 @@ public final class DriverFactory {
     if (config.headless()) {
       options.addArguments("--headless=new");
     }
-    options.addArguments("--window-size=1920,1080", "--disable-gpu", "--no-sandbox");
+    options.addArguments(
+        "--window-size=1920,1080",
+        "--disable-gpu",
+        "--no-sandbox",
+        "--disable-features=PasswordLeakDetection,PasswordCheck");
+    // Chrome real muestra un aviso nativo "contraseña filtrada" al iniciar sesión con claves
+    // conocidas y ese aviso bloquea los clicks (no se ve en el screenshot). Se apaga para tests.
+    options.setExperimentalOption(
+        "prefs",
+        Map.of(
+            "credentials_enable_service", false,
+            "profile.password_manager_enabled", false,
+            "profile.password_manager_leak_detection", false));
     return options;
   }
 

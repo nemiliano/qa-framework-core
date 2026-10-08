@@ -25,7 +25,9 @@ public final class ApiClient {
         new RequestSpecBuilder()
             .setBaseUri(baseUrl)
             .setContentType(ContentType.JSON)
-            .setAccept(ContentType.JSON)
+            // Texto fijo: ContentType.JSON enviaría una lista de 4 tipos y algunos servidores
+            // estrictos (por ejemplo restful-booker) responden 418
+            .setAccept("application/json")
             .addFilter(new AllureRestAssured());
     return new ApiClient(builder);
   }

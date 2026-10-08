@@ -51,6 +51,25 @@ public class BaseComponent {
     clickable(by).click();
   }
 
+  /**
+   * Hace click en {@code target} y espera a que aparezca {@code expected}; si no aparece, vuelve a
+   * hacer click mientras {@code target} siga presente. Resuelve el caso típico de una página que
+   * muestra el botón antes de enganchar su manejador: el primer click se pierde sin error.
+   *
+   * <p>Usar solo cuando el click hace desaparecer o reemplazar a {@code target} (por ejemplo "Add
+   * to cart" pasa a "Remove"); si no, un reintento podría repetir la acción.
+   */
+  protected void clickUntilVisible(By target, By expected) {
+    wait.until(
+        d -> {
+          if (!d.findElements(expected).isEmpty() && d.findElement(expected).isDisplayed()) {
+            return true;
+          }
+          d.findElements(target).stream().findFirst().ifPresent(WebElement::click);
+          return false;
+        });
+  }
+
   protected void type(By by, String text) {
     WebElement element = visible(by);
     element.clear();

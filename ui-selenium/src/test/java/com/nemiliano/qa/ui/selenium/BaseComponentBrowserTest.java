@@ -46,9 +46,30 @@ class BaseComponentBrowserTest {
     assertThat(pageObject.clickAndWaitResult()).isEqualTo("listo");
   }
 
+  // El botón se ve de inmediato pero su manejador se engancha 1,5 s después: el primer click se
+  // pierde
+  private static final String LATE_HANDLER_PAGE =
+      "data:text/html,<button id='add'>Agregar</button><p id='done' style='display:none'>ok</p>"
+          + "<script>setTimeout(()=>{document.getElementById('add').onclick=()=>{"
+          + "document.getElementById('add').remove();"
+          + "document.getElementById('done').style.display='block'}},1500)</script>";
+
+  @Test
+  @DisplayName("clickUntilVisible reintenta cuando el primer click se pierde")
+  void retriesClickWhenHandlerIsNotReadyYet() {
+    pageObject.open(LATE_HANDLER_PAGE);
+
+    assertThat(pageObject.addWithRetry()).isEqualTo("ok");
+  }
+
   private static final class DemoPage extends BasePage {
     DemoPage(WebDriver driver, Duration timeout) {
       super(driver, timeout);
+    }
+
+    String addWithRetry() {
+      clickUntilVisible(By.id("add"), By.id("done"));
+      return getTextElement(By.id("done"));
     }
 
     String clickAndWaitResult() {
