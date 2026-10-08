@@ -1,0 +1,3 @@
+Caso de prueba,usuario,clave,exito,resultadoEsperado
+Mismo caso,a,b,true,ok
+Mismo caso,c,d,false,ok

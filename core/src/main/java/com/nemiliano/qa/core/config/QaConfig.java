@@ -45,6 +45,24 @@ public interface QaConfig extends Config {
   @DefaultValue("0")
   int slowMoMs();
 
+  @Key("api.base.url")
+  @DefaultValue("https://restful-booker.herokuapp.com")
+  String apiBaseUrl();
+
+  /** URL JDBC. El driver del motor (Oracle, PostgreSQL...) lo agrega el proyecto consumidor. */
+  @Key("db.url")
+  @DefaultValue("jdbc:h2:mem:qa;DB_CLOSE_DELAY=-1")
+  String dbUrl();
+
+  @Key("db.user")
+  @DefaultValue("sa")
+  String dbUser();
+
+  /** Nunca va en un archivo del repo: usar la variable de ambiente DB_PASSWORD. */
+  @Key("db.password")
+  @DefaultValue("")
+  String dbPassword();
+
   /** Carpeta donde se guardan screenshots, HTML y trace ante un fallo. */
   @Key("evidence.dir")
   @DefaultValue("target/evidence")

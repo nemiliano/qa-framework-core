@@ -1,0 +1,4 @@
+Caso de prueba,usuario,clave,exito,resultadoEsperado
+Usuario válido accede al inventario,standard_user,secret_sauce,true,Se muestra el inventario
+Usuario bloqueado ve mensaje de error,locked_out_user,secret_sauce,false,Epic sadface: Sorry this user has been locked out
+Clave incorrecta es rechazada,standard_user,mala,false,Epic sadface: Username and password do not match

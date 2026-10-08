@@ -1,0 +1,14 @@
+[
+  {
+    "casoDePrueba": "Alta con dirección anidada",
+    "nombre": "Ana",
+    "direccion": { "ciudad": "Rosario", "cp": "2000" },
+    "edad": 30
+  },
+  {
+    "casoDePrueba": "Alta de menor",
+    "nombre": "Luis",
+    "direccion": { "ciudad": "Salta", "cp": "4400" },
+    "edad": 17
+  }
+]

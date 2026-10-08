@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.nemiliano.qa</groupId>
+    <artifactId>qa-framework-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>qa-db</artifactId>
+  <name>QA DB</name>
+  <description>Acceso JDBC genérico con pool (HikariCP) y consultas parametrizadas.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.nemiliano.qa</groupId>
+      <artifactId>qa-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+    </dependency>
+    <!-- El driver del motor (Oracle, PostgreSQL...) lo agrega el proyecto que consume el módulo.
+         H2 se usa solo para los tests del propio framework. -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

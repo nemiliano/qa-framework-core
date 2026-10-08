@@ -11,9 +11,14 @@ Librería base de automatización de pruebas (Java, JUnit, Selenium, Playwright)
 |---|---|
 | `bom` | Fija las versiones de todas las librerías (Bill Of Materials) |
 | `core` | Configuración por ambiente (`QaConfig`), logging (Log4j2) y excepciones |
-| `junit-extensions` | `QaExtension`: logging de ciclo de vida e inyección de `QaConfig` |
-
-(Se irán sumando `ui-selenium`, `ui-playwright`, `data`, `api`, `db`, `files`, `reporting`.)
+| `reporting` | Evidencias (disco + Allure) y nombres de evidencia |
+| `data` | Datos de prueba desde CSV/JSON a `record`, con "Caso de prueba" (`@CsvTestData`, `@JsonTestData`) |
+| `api` | Cliente HTTP (REST Assured) con request/response en Allure |
+| `db` | JDBC con pool (HikariCP), consultas parametrizadas y transacciones |
+| `files` | Archivos temporales, CSV, JSON y espera de descargas |
+| `ui-selenium` | WebDriver (Selenium Manager), `BasePage`/`BaseComponent` con waits explícitos |
+| `ui-playwright` | Sesión Playwright (Browser/Context/Page por test), tracing |
+| `junit-extensions` | `QaExtension`, `SeleniumExtension`, `PlaywrightExtension` (evidencias ante fallo) |
 
 ## Comandos
 ```powershell
@@ -44,3 +49,18 @@ class MiTest {
   }
 }
 ```
+
+## Tests con navegador
+Llevan `@Tag("browser")` y se excluyen por defecto. Una sola vez, instalar los navegadores de Playwright:
+```powershell
+.\mvnw.cmd install -DskipTests
+.\mvnw.cmd -pl ui-playwright exec:java "-Dexec.mainClass=com.microsoft.playwright.CLI" "-Dexec.args=install chromium"
+```
+Y para correrlos: `.\mvnw.cmd clean verify -DexcludedGroups=none`.
+
+## Usar el framework desde otro proyecto
+**Local:** `.\mvnw.cmd clean install` instala todo en tu `~/.m2`. En el otro proyecto se importa el BOM y se declaran solo los módulos necesarios (sin versión).
+
+**GitHub Packages:** el `pom.xml` ya apunta a `https://maven.pkg.github.com/nemiliano/qa-framework-core`. La publicación la hará GitHub Actions al crear un tag (Fase 7). Para consumirlo se necesita un token con permiso `read:packages` en `~/.m2/settings.xml` (server id `github`).
+
+**Versionado semántico:** `MAYOR.MENOR.PARCHE`. Parche = corrección sin cambios de API; menor = funcionalidad nueva compatible; mayor = cambio incompatible. Los tags son `v0.1.0`, `v0.2.0`, etc.

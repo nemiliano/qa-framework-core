@@ -28,6 +28,7 @@
     <datafaker.version>2.7.0</datafaker.version>
     <hikari.version>7.1.0</hikari.version>
     <h2.version>2.5.252</h2.version>
+    <awaitility.version>4.3.0</awaitility.version>
   </properties>
 
   <dependencyManagement>
@@ -112,7 +113,33 @@
         <version>${h2.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>org.awaitility</groupId>
+        <artifactId>awaitility</artifactId>
+        <version>${awaitility.version}</version>
+      </dependency>
+
       <!-- Módulos propios del framework -->
+      <dependency>
+        <groupId>com.nemiliano.qa</groupId>
+        <artifactId>qa-data</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.nemiliano.qa</groupId>
+        <artifactId>qa-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.nemiliano.qa</groupId>
+        <artifactId>qa-db</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.nemiliano.qa</groupId>
+        <artifactId>qa-files</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>com.nemiliano.qa</groupId>
         <artifactId>qa-core</artifactId>
