@@ -14,6 +14,6 @@ class QaExtensionTest {
   @DisplayName("La extensión inyecta QaConfig como parámetro")
   void injectsConfig(QaConfig config) {
     assertThat(config).isNotNull();
-    assertThat(config.baseUrl()).startsWith("https://");
+    assertThat(config.baseUrl()).isNotBlank();
   }
 }

@@ -21,7 +21,7 @@ public interface QaConfig extends Config {
   String environment();
 
   @Key("base.url")
-  @DefaultValue("https://www.saucedemo.com")
+  @DefaultValue("http://localhost:8080")
   String baseUrl();
 
   @Key("ui.engine")
@@ -46,7 +46,7 @@ public interface QaConfig extends Config {
   int slowMoMs();
 
   @Key("api.base.url")
-  @DefaultValue("https://restful-booker.herokuapp.com")
+  @DefaultValue("http://localhost:8080")
   String apiBaseUrl();
 
   /** URL JDBC. El driver del motor (Oracle, PostgreSQL...) lo agrega el proyecto consumidor. */

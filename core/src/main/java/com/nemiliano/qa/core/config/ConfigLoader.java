@@ -16,6 +16,7 @@ import org.aeonbits.owner.ConfigFactory;
 public final class ConfigLoader {
 
   private static final String ENV_KEY = "qa.env";
+  private static final String DEFAULT_ENV = "local";
   private static volatile QaConfig instance;
 
   private ConfigLoader() {}
@@ -69,6 +70,9 @@ public final class ConfigLoader {
     String resource = "config/" + environment + ".properties";
     try (InputStream in = ConfigLoader.class.getClassLoader().getResourceAsStream(resource)) {
       if (in == null) {
+        if (DEFAULT_ENV.equals(environment)) {
+          return props; // el ambiente por defecto puede funcionar solo con los valores por defecto
+        }
         throw new ConfigurationException(
             "No existe el archivo de configuración '"
                 + resource
