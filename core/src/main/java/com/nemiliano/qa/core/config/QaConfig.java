@@ -39,4 +39,14 @@ public interface QaConfig extends Config {
   @Key("timeout.seconds")
   @DefaultValue("10")
   int timeoutSeconds();
+
+  /** Pausa entre acciones de Playwright en milisegundos (solo para depurar a ojo). */
+  @Key("slowmo.ms")
+  @DefaultValue("0")
+  int slowMoMs();
+
+  /** Carpeta donde se guardan screenshots, HTML y trace ante un fallo. */
+  @Key("evidence.dir")
+  @DefaultValue("target/evidence")
+  String evidenceDir();
 }

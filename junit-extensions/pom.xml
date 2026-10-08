@@ -12,18 +12,38 @@
 
   <artifactId>qa-junit-extensions</artifactId>
   <name>QA JUnit Extensions</name>
-  <description>Extensiones JUnit 5/6: ciclo de vida, inyección de dependencias y evidencias.</description>
+  <description>Extensiones JUnit: ciclo de vida, inyección de dependencias y evidencias.</description>
 
   <dependencies>
     <dependency>
       <groupId>com.nemiliano.qa</groupId>
       <artifactId>qa-core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.nemiliano.qa</groupId>
+      <artifactId>qa-reporting</artifactId>
+    </dependency>
+    <!-- Optativos: quien usa solo Playwright no arrastra Selenium, y viceversa (ADR-0003) -->
+    <dependency>
+      <groupId>com.nemiliano.qa</groupId>
+      <artifactId>qa-ui-selenium</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.nemiliano.qa</groupId>
+      <artifactId>qa-ui-playwright</artifactId>
+      <optional>true</optional>
+    </dependency>
     <!-- La API de JUnit la aporta quien consume el framework; aquí solo se compila contra ella -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-testkit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

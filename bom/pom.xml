@@ -120,6 +120,21 @@
       </dependency>
       <dependency>
         <groupId>com.nemiliano.qa</groupId>
+        <artifactId>qa-reporting</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.nemiliano.qa</groupId>
+        <artifactId>qa-ui-selenium</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.nemiliano.qa</groupId>
+        <artifactId>qa-ui-playwright</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.nemiliano.qa</groupId>
         <artifactId>qa-junit-extensions</artifactId>
         <version>${project.version}</version>
       </dependency>
