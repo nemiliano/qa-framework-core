@@ -61,6 +61,35 @@ Y para correrlos: `.\mvnw.cmd clean verify -DexcludedGroups=none`.
 ## Usar el framework desde otro proyecto
 **Local:** `.\mvnw.cmd clean install` instala todo en tu `~/.m2`. En el otro proyecto se importa el BOM y se declaran solo los módulos necesarios (sin versión).
 
-**GitHub Packages:** el `pom.xml` ya apunta a `https://maven.pkg.github.com/nemiliano/qa-framework-core`. La publicación la hará GitHub Actions al crear un tag (Fase 7). Para consumirlo se necesita un token con permiso `read:packages` en `~/.m2/settings.xml` (server id `github`).
+**GitHub Packages:** al crear un tag `vX.Y.Z`, GitHub Actions (`publish.yml`) fija esa versión en los poms, corre los tests, publica los 11 módulos y crea el Release. Para publicar una versión nueva:
+```powershell
+git tag -a v0.2.0 -m "Descripción" ; git push origin v0.2.0
+```
+Para consumirlo desde otro proyecto, GitHub Packages exige autenticarse incluso en repos públicos:
+1. Creá un token (classic) con permiso `read:packages` y agregalo en `~/.m2/settings.xml`:
+```xml
+<servers>
+  <server>
+    <id>github</id>
+    <username>TU_USUARIO_DE_GITHUB</username>
+    <password>${env.GITHUB_TOKEN}</password>   <!-- el token va en una variable de ambiente, no escrito acá -->
+  </server>
+</servers>
+```
+2. En el `pom.xml` del proyecto consumidor:
+```xml
+<repositories>
+  <repository>
+    <id>github</id>
+    <url>https://maven.pkg.github.com/nemiliano/qa-framework-core</url>
+  </repository>
+</repositories>
+```
+y se importa el BOM `com.nemiliano.qa:qa-framework-bom:0.1.0` en `dependencyManagement`, como hace `qa-tests-demo`.
+
+## CI (GitHub Actions)
+- `ci.yml`: en cada push y Pull Request a `main` corre `verify` (tests unitarios y formato) y, en otro job, los tests con navegador.
+- `publish.yml`: al crear un tag `v*` publica en GitHub Packages.
+- La rama `main` está protegida: los cambios entran por Pull Request con los checks en verde.
 
 **Versionado semántico:** `MAYOR.MENOR.PARCHE`. Parche = corrección sin cambios de API; menor = funcionalidad nueva compatible; mayor = cambio incompatible. Los tags son `v0.1.0`, `v0.2.0`, etc.
